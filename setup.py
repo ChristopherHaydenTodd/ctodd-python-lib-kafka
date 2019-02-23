@@ -146,7 +146,7 @@ def main():
         author="Christopher H. Todd",
         author_email="Christopher.Hayden.Todd@gmail.com",
         classifiers=["Programming Language :: Python"],
-        keywords=["python", "libraries", "Kafka", "consumer", "producer],
+        keywords=["python", "libraries", "Kafka", "consumer", "producer"],
         packages=packages,
         install_requires=install_requirements,
         setup_requires=setup_requirements,
