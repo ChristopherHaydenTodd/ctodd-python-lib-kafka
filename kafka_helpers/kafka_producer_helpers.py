@@ -1,6 +1,6 @@
 """
     Purpose:
-        Kafka General Helpers.
+        Kafka Producer Helpers.
 
         This library is used to aid in creating kafka producers.
 """

@@ -3,12 +3,12 @@
 # Push Package To Repository
 #
 # Example Call:
-#    ./push.sh --repository=http://localhost:8081/repository/pypi/
+#    ./push.sh --repo_host=localhost
 #
 
-REPOSITORY_PROTOCOL="https"
+REPOSITORY_PROTOCOL="http"
 REPOSITORY_PORT="8081"
-REPOSITORY_HOST=""
+REPOSITORY_HOST="localhost"
 REPOSITORY_PYPI="pypi"
 USERNAME=""
 PASSWORD=""
