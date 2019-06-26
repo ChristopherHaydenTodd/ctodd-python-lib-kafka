@@ -14,7 +14,8 @@ The ctodd-python-lib-kafka project is responsible for interacting with Apache Ka
 
 ### Python Packages
 
--
+- confluent-kafka==0.11.6
+- simplejson==3.16.0
 
 ## Libraries
 
