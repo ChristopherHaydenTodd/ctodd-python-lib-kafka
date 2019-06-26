@@ -14,9 +14,33 @@ The ctodd-python-lib-kafka project is responsible for interacting with Apache Ka
 
 ### Python Packages
 
--
+- confluent-kafka==0.11.6
+- simplejson==3.16.0
 
 ## Libraries
+
+### [kafka_admin_helpers.py](https://github.com/ChristopherHaydenTodd/ctodd-python-lib-kafka/blob/master/kafka_helpers/kafka_admin_helpers.py)
+
+This library is used to interacting with Kafka Admin functionality. This
+includes getting the admin object that will return details about kafka
+state.
+
+Functions:
+
+```
+def get_kafka_admin_client(kafka_brokers):
+    """
+    Purpose:
+        Get a Kafka Admin Client Object. Allows for polling information about Kafka
+        configuration and creating objects in Kafka
+    Args:
+        kafka_brokers (List of Strings): List of host:port combinations for kakfa
+            brokers
+    Return:
+        kafka_admin_client (Kafka Admin Client Obj): Kafka Admin Client Obj for the
+            brokers
+    """
+```
 
 ### [kafka_consumer_helpers.py](https://github.com/ChristopherHaydenTodd/ctodd-python-lib-kafka/blob/master/kafka_helpers/kafka_consumer_helpers.py)
 
@@ -135,6 +159,47 @@ def produce_results_callback(err, msg):
     """
 ```
 
+
+### [kafka_topic_helpers.py](https://github.com/ChristopherHaydenTodd/ctodd-python-lib-kafka/blob/master/kafka_helpers/kafka_topic_helpers.py)
+
+This library is used to interact with kafka topics. This includes getting
+a list of the topics, finding details about a topic, creating topics, and
+more.
+
+Functions:
+
+```
+def get_topics(kafka_admin_client, return_system_topics=False):
+    """
+    Purpose:
+        Get a List of Kafka Topics.
+    Args:
+        kafka_admin_client (Kafka Admin Client Obj): Kafka Admin Client Obj for the
+            brokers
+    Return:
+        kafka_topics (Dict of Kafka Topics): Key is the topic name and value is a
+            Kafka metadata object that has basic topic information
+    """
+```
+
+```
+def create_kafka_topic(
+    kafka_admin_client, topic_name, topic_replication=1, topic_partitions=1
+):
+    """
+    Purpose:
+        Create a Kafka Topic
+    Args:
+        kafka_admin_client (Kafka Admin Client Obj): Kafka Admin Client Obj for the
+            brokers
+        topic_name (String): Name of the topic to create
+        topic_replication (Int): Replication factor for the new topic
+        topic_partitions (Int): Number of partitions to devide the topic into
+    Return:
+        N/A
+    """
+```
+
 ## Example Scripts
 
 Example executable Python scripts/modules for testing and interacting with the library. These show example use-cases for the libraries and can be used as templates for developing with the libraries or to use as one-off development efforts.
@@ -172,6 +237,25 @@ Example executable Python scripts/modules for testing and interacting with the l
 
     example script call:
         python3 produce_to_kafka_topic.py --topic="test-env-topic" \
+            --broker="localhost:9092"
+```
+
+### [create_kakfa_topic.py](https://github.com/ChristopherHaydenTodd/ctodd-python-lib-kafka/blob/master/example_usage/create_kakfa_topic.py)
+
+```
+    Purpose:
+        Create a Kafka Topic. Takes in replication and parition information
+
+    Steps:
+        - Connect to Kafka
+        - Create Kafka Admin Client
+        - Create Topic In Kafka
+
+    function call:
+        ---
+    example script call:
+        python3 create_kafka_topic.py --topic-name="test-env-topic" \
+            --topic-replication=3 --topic-partitions=4 \
             --broker="localhost:9092"
 ```
 
