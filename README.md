@@ -18,6 +18,29 @@ The ctodd-python-lib-kafka project is responsible for interacting with Apache Ka
 
 ## Libraries
 
+### [kafka_admin_helpers.py](https://github.com/ChristopherHaydenTodd/ctodd-python-lib-kafka/blob/master/kafka_helpers/kafka_admin_helpers.py)
+
+This library is used to interacting with Kafka Admin functionality. This
+includes getting the admin object that will return details about kafka
+state.
+
+Functions:
+
+```
+def get_kafka_admin_client(kafka_brokers):
+    """
+    Purpose:
+        Get a Kafka Admin Client Object. Allows for polling information about Kafka
+        configuration and creating objects in Kafka
+    Args:
+        kafka_brokers (List of Strings): List of host:port combinations for kakfa
+            brokers
+    Return:
+        kafka_admin_client (Kafka Admin Client Obj): Kafka Admin Client Obj for the
+            brokers
+    """
+```
+
 ### [kafka_consumer_helpers.py](https://github.com/ChristopherHaydenTodd/ctodd-python-lib-kafka/blob/master/kafka_helpers/kafka_consumer_helpers.py)
 
 This library is used to aid in creating kafka consumers.
