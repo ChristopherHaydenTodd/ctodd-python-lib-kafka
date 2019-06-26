@@ -122,7 +122,7 @@ if __name__ == "__main__":
     logging.basicConfig(
         stream=sys.stdout,
         level=log_level,
-        format="[produce_to_kafka_topic] %(asctime)s %(levelname)s %(message)s",
+        format="[produce_to_kafka_topic] %(asctime)s.%(msecs)03d %(levelname)s %(message)s",
         datefmt="%a, %d %b %Y %H:%M:%S"
     )
 
