@@ -175,6 +175,25 @@ Example executable Python scripts/modules for testing and interacting with the l
             --broker="localhost:9092"
 ```
 
+### [create_kakfa_topic.py](https://github.com/ChristopherHaydenTodd/ctodd-python-lib-kafka/blob/master/example_usage/create_kakfa_topic.py)
+
+```
+    Purpose:
+        Create a Kafka Topic. Takes in replication and parition information
+
+    Steps:
+        - Connect to Kafka
+        - Create Kafka Admin Client
+        - Create Topic In Kafka
+
+    function call:
+        ---
+    example script call:
+        python3 create_kafka_topic.py --topic-name="test-env-topic" \
+            --topic-replication=3 --topic-partitions=4 \
+            --broker="localhost:9092"
+```
+
 ## Notes
 
  - Relies on f-string notation, which is limited to Python3.6.  A refactor to remove these could allow for development with Python3.0.x through 3.5.x
