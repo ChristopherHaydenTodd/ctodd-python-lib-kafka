@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 """
     Purpose:
-        Produce to a Kafka Topic
+        Create a Kafka Topic. Takes in replication and parition information
 
     Steps:
         - Connect to Kafka
-        - Create Producer Object
-        - Prompt for Input
-        - Parse Input
-        - Produce Input to Kafka
+        - Create Kafka Admin Client
+        - Create Topic In Kafka
 
+    function call:
+        ---
     example script call:
-        python3 produce_to_kafka_topic.py --topic="test-env-topic" \
+        python3 create_kafka_topic.py --topic-name="test-env-topic" \
+            --topic-replication=3 --topic-partitions=4 \
             --broker="localhost:9092"
 """
 
@@ -22,7 +23,7 @@ import sys
 from argparse import ArgumentParser
 
 # Local Library Imports
-from kafka_helpers import kafka_producer_helpers
+from kafka_helpers import kafka_admin_helpers, kafka_topic_helpers
 
 
 def main():
@@ -30,17 +31,25 @@ def main():
     Purpose:
         Produce to a Kafka Topic
     """
-    logging.info("Starting Kafka Topic Producing")
+    logging.info("Starting Kafka Topic Creation")
 
     opts = get_options()
 
-    kafka_producer = kafka_producer_helpers.get_kafka_producer(opts.kafka_brokers)
-    for user_input in get_input_from_user(max_input=999):
-        kafka_producer_helpers.produce_message(
-            kafka_producer, opts.kafka_topic, user_input
-        )
+    kafka_admin_client = kafka_admin_helpers.get_kafka_admin_client(opts.kafka_brokers)
+    kafka_topics = kafka_topic_helpers.get_topics(kafka_admin_client)
 
-    logging.info("Kafka Topic Producing Complete")
+    if opts.topic_name in kafka_topics:
+        error_msg = f"Topic name already exists: {opts.topic_name}"
+        raise Exception(error_msg)
+
+    kafka_topic_helpers.create_kafka_topic(
+        kafka_admin_client,
+        opts.topic_name,
+        topic_replication=opts.topic_replication,
+        topic_partitions=opts.topic_partitions
+    )
+
+    logging.info("Kafka Topic Creation Complete")
 
 
 ###
@@ -93,7 +102,22 @@ def get_options():
     optional = parser.add_argument_group("Optional Arguments")
 
     # Optional Arguments
-    # N/A
+    optional.add_argument(
+        "-R", "--replication", "--topic-replication",
+        dest="topic_replication",
+        help="Replication factor of the topic to create",
+        required=False,
+        default=1,
+        type=int,
+    )
+    optional.add_argument(
+        "-P", "--partitions", "--topic-partitions",
+        dest="topic_partitions",
+        help="Number of partitions of the topic to create",
+        required=False,
+        default=1,
+        type=int,
+    )
 
     # Required Arguments
     required.add_argument(
@@ -105,9 +129,9 @@ def get_options():
         type=str,
     )
     required.add_argument(
-        "-T", "--topic", "--kafka-topic",
-        dest="kafka_topic",
-        help="Kafka Topic",
+        "-T", "--topic", "--kafka-topic", "--topic-name",
+        dest="topic_name",
+        help="Topic name to create",
         required=True,
         type=str,
     )
@@ -122,7 +146,7 @@ if __name__ == "__main__":
     logging.basicConfig(
         stream=sys.stdout,
         level=log_level,
-        format="[produce_to_kafka_topic] %(asctime)s.%(msecs)03d %(levelname)s %(message)s",
+        format="[create_kafka_topic] %(asctime)s.%(msecs)03d %(levelname)s %(message)s",
         datefmt="%a, %d %b %Y %H:%M:%S"
     )
 

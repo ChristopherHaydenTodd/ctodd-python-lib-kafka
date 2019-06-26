@@ -43,6 +43,7 @@ def produce_message(kafka_producer, kafka_topic, msg):
     logging.info(f"Producing Message to Topic {kafka_topic}")
 
     try:
+        kafka_producer.poll(0)
         kafka_producer.produce(
             kafka_topic, msg, callback=produce_results_callback
         )
@@ -51,6 +52,7 @@ def produce_message(kafka_producer, kafka_topic, msg):
             f"Local producer queue is full ({len(kafka_producer)} messages "
             f"awaiting delivery): {buf_err} "
         )
+        kafka_producer.flush()
     except Exception as err:
         logging.exception(f"General Kafka Exception During Produce: {err}")
 
